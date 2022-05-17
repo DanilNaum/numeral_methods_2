@@ -2,7 +2,7 @@
 #include <cmath>
 #include <vector>
 #include <iomanip>
-constexpr auto MOD = "TEST";
+
 using namespace std;
 
 vector<double>Gaus(vector<vector <double>>& A, vector<double>& B) {
@@ -33,10 +33,8 @@ vector<double>Gaus(vector<vector <double>>& A, vector<double>& B) {
 }
 
 int main() {
-	//if (MOD == "TEST") {
-		vector<vector<double>>A = { {13., 1., 1.} ,{1.,15.,1.} ,{1., 1., 17.} };
-		vector<double>B = { 15., 17., 19. };
-	//}
+	vector<vector<double>>A = { {13., 1., 1.} ,{1.,15.,1.} ,{1., 1., 17.} };
+	vector<double>B = { 15., 17., 19. };
 	Gaus(A, B);
 	return 0;
 }
