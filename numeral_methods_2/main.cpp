@@ -88,6 +88,27 @@ vector<double>Zeyidey(vector<vector <double>> A, vector<double> B) {
 	}
 	return x;
 }
+vector<vector<double>> operator*(double x,vector<vector<double>>M) {
+	for (int i = 0; i < M.size(); i++) {
+		for (int j = 0; j < M[i].size(); j++) {
+			M[i][j] *= x;
+		}
+	}
+	return M;
+}
+
+vector<vector<double>> operator+(vector<vector<double>>A, vector<vector<double>>B) {
+	if (A.size() != B.size()) {
+		for (int i = 0; i < A.size(); i++) {
+			for (int j = 0; j < A[i].size(); j++) {
+				A[i][j] += B[i][j];
+			}
+		}
+		return A;
+	}
+	return;
+}
+
 int main() {
 	vector<vector<double>>A = { {13., 1., 1.} 
 	                           ,{1., 15., 1.} 
@@ -99,9 +120,22 @@ int main() {
 		cout << ans[i] << " ";
 	}
 	ans = Zeyidey(A, B);
-	cout << "Zeyidey:" << " ";
+	cout << "\nZeyidey:" << " ";
 	for (int i = 0; i < ans.size(); i++) {
 		cout << ans[i] << " ";
 	}
+	/*vector<vector<double>>A;
+	vector<double>B;
+	A = 
+	vector<double>ans = Gauss(A, B);
+	cout << "Gauss:" << " ";
+	for (int i = 0; i < ans.size(); i++) {
+		cout << ans[i] << " ";
+	}
+	ans = Zeyidey(A, B);
+	cout << "\nZeyidey:" << " ";
+	for (int i = 0; i < ans.size(); i++) {
+		cout << ans[i] << " ";
+	}*/
 	return 0;
 }
