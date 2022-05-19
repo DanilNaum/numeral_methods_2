@@ -46,7 +46,7 @@ vector<vector<double>> ForwardGauss(vector<vector <double>>& A, bool p) {
 	return A;
 }
 
-vector<double>Gaus(vector<vector <double>>& A, vector<double>& B) {
+vector<double>Gauss(vector<vector <double>> A, vector<double> B) {
 	A.push_back(B);
 	A = ForwardGauss(A,1);
 	A = ForwardGauss(A,0);
@@ -59,13 +59,47 @@ vector<double>Gaus(vector<vector <double>>& A, vector<double>& B) {
 	return A[A.size() - 1];
 }
 
+double norm_v(vector<double> V) {
+	double ans = 0;
+	for (int i = 0; i < V.size(); i++) {
+		ans += pow(V[i],2);
+	}
+	return ans;
+}
+
+vector<double>Zeyidey(vector<vector <double>> A, vector<double> B) {
+	vector<double> x(B.size(), 0), x_prew(B.size(), -10000);
+	for (int i = 0; i < A.size(); i++) {
+		for (int j = 0; j < A[i].size(); j++) {
+			if (i != j) A[i][j] /= -A[i][i];
+		}
+		B[i] /= A[i][i];
+		A[i][i] = 0;
+	}
+	
+	while (abs(norm_v(x) - norm_v(x_prew)) > 1e-3) {
+		x_prew = x;
+		for (int i = 0; i < x.size(); i++) {
+			x[i] = 0;
+			for (int j = 0; j < x.size(); j++) 
+				x[i] += x[j] * A[i][j];
+			x[i] += B[i];
+		}
+	}
+	return x;
+}
 int main() {
-	vector<vector<double>>A = { {0., 1., 1.} 
+	vector<vector<double>>A = { {13., 1., 1.} 
 	                           ,{1., 15., 1.} 
 	                           ,{1., 1., 17.} };
 	vector<double>B = { 15., 17., 19. };
-	vector<double>ans = Gaus(A, B);
+	vector<double>ans = Gauss(A, B);
 	cout << "Gauss:" << " ";
+	for (int i = 0; i < ans.size(); i++) {
+		cout << ans[i] << " ";
+	}
+	ans = Zeyidey(A, B);
+	cout << "Zeyidey:" << " ";
 	for (int i = 0; i < ans.size(); i++) {
 		cout << ans[i] << " ";
 	}
