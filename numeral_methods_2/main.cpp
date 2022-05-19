@@ -4,11 +4,24 @@
 #include <iomanip>
 
 using namespace std;
-vector<vector<double>> ForwardGauss(vector<vector <double>>& A) {
+vector<vector<double>> ForwardGauss(vector<vector <double>>& A, bool p) {
 	vector<double> B = A[A.size()-1];
 	A.erase(A.end()-1);
 	for (int i = 0; i < A.size(); i++) { //прямой ход Гауса
 		double first = A[i][i];
+		if (p) {
+			for (int k = i + 1; k < A.size(); k++) {
+				if (first < A[k][i]) {
+					first = A[k][i];
+					vector<double> tmp_v = A[i];
+					A[i] = A[k];
+					A[k] = tmp_v;
+					double tmp_d = B[i];
+					B[i] = B[k];
+					B[k] = tmp_d;
+				}
+			}
+		}
 		B[i] /= first;
 		for (int j = 0; j < A[i].size(); j++) {
 			A[i][j] /= first;
@@ -35,21 +48,19 @@ vector<vector<double>> ForwardGauss(vector<vector <double>>& A) {
 
 vector<double>Gaus(vector<vector <double>>& A, vector<double>& B) {
 	A.push_back(B);
-	A = ForwardGauss(A);
-	A = ForwardGauss(A);
-	B = A[A.size()-1];
-	A.erase(A.end()-1); 
-	for (int i = 0; i < A.size(); i++) {
+	A = ForwardGauss(A,1);
+	A = ForwardGauss(A,0);
+	for (int i = 0; i < A.size()-1; i++) {
 		for (int j = 0; j < A[i].size(); j++) {
 			cout<<A[i][j]<<" ";
 		}
-		cout <<" \t |" << B[i] << endl;
+		cout <<" \t |" << A[A.size()-1][i] << endl;
 	}
-	return B;
+	return A[A.size() - 1];
 }
 
 int main() {
-	vector<vector<double>>A = { {13., 1., 1.} 
+	vector<vector<double>>A = { {0., 1., 1.} 
 	                           ,{1., 15., 1.} 
 	                           ,{1., 1., 17.} };
 	vector<double>B = { 15., 17., 19. };
