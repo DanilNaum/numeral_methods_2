@@ -106,7 +106,17 @@ vector<vector<double>> operator+(vector<vector<double>>A, vector<vector<double>>
 		}
 		return A;
 	}
-	return;
+	exit(0);
+}
+
+ostream& operator<< (ostream& out, vector<vector<double>>A) {
+	for (int i = 0; i < A.size(); i++) {
+		for (int j = 0; j < A[i].size(); j++) {
+			out <<setw(8)<< A[i][j]<<" ";
+		}
+		out << endl;
+	}
+	return out;
 }
 
 int main() {
@@ -124,10 +134,20 @@ int main() {
 	for (int i = 0; i < ans.size(); i++) {
 		cout << ans[i] << " ";
 	}
-	/*vector<vector<double>>A;
-	vector<double>B;
-	A = 
-	vector<double>ans = Gauss(A, B);
+	cout  << "\n";
+	int size = 5;
+	A.resize(size);
+	B.resize(size);
+	for (int i = 0; i < size; i++) {
+		A[i].resize(size);
+		B[i] = -1;
+		for (int j = 0; j < size; j++) {
+			A[i][j] = (int(i <= j) - ( 2 * int(i < j))) + 11 * (1e-3) * ( 1 - (2 * int(i < j)));
+		}
+	}
+	cout << "\n" << A;
+	B[size - 1] = 1;
+	ans = Gauss(A, B);
 	cout << "Gauss:" << " ";
 	for (int i = 0; i < ans.size(); i++) {
 		cout << ans[i] << " ";
@@ -136,6 +156,6 @@ int main() {
 	cout << "\nZeyidey:" << " ";
 	for (int i = 0; i < ans.size(); i++) {
 		cout << ans[i] << " ";
-	}*/
+	}cout << "\n";
 	return 0;
 }
