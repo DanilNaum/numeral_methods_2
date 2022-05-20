@@ -4,6 +4,52 @@
 #include <iomanip>
 
 using namespace std;
+vector<vector<double>> operator*(double x, vector<vector<double>>M) {
+	for (int i = 0; i < M.size(); i++) {
+		for (int j = 0; j < M[i].size(); j++) {
+			M[i][j] *= x;
+		}
+	}
+	return M;
+}
+
+vector<vector<double>> operator+(vector<vector<double>>A, vector<vector<double>>B) {
+	if (A.size() != B.size()) {
+		for (int i = 0; i < A.size(); i++) {
+			for (int j = 0; j < A[i].size(); j++) {
+				A[i][j] += B[i][j];
+			}
+		}
+		return A;
+	}
+	exit(0);
+}
+
+vector<vector<double>> operator|(vector<vector<double>>A, vector<double>B) {
+	A.push_back(B);
+	return A;
+}
+
+ostream& operator<< (ostream& out, vector<vector<double>>A) {
+	if (A.size() == A[0].size()) {
+		for (int i = 0; i < A.size(); i++) {
+			for (int j = 0; j < A[i].size(); j++) {
+				out << setw(8) << A[i][j] << " ";
+			}
+			out << endl;
+		}
+	}
+	else if (A.size() - 1 == A[0].size()) {
+		for (int i = 0; i < A.size() - 1; i++) {
+			for (int j = 0; j < A[i].size(); j++) {
+				out << setw(8) << A[i][j] << " ";
+			}
+			out << " \t |" << A[A.size() - 1][i] << endl;
+		}
+	}
+	return out;
+}
+
 vector<vector<double>> ForwardGauss(vector<vector <double>>& A, bool p) {
 	vector<double> B = A[A.size()-1];
 	A.erase(A.end()-1);
@@ -46,16 +92,11 @@ vector<vector<double>> ForwardGauss(vector<vector <double>>& A, bool p) {
 	return A;
 }
 
-vector<double>Gauss(vector<vector <double>> A, vector<double> B) {
+vector<double> Gauss(vector<vector<double>> A, vector<double> B) {
 	A.push_back(B);
-	A = ForwardGauss(A,1);
+	A = ForwardGauss( A,1);
 	A = ForwardGauss(A,0);
-	for (int i = 0; i < A.size()-1; i++) {
-		for (int j = 0; j < A[i].size(); j++) {
-			cout<<A[i][j]<<" ";
-		}
-		cout <<" \t |" << A[A.size()-1][i] << endl;
-	}
+	cout <<"Gauss:\n" << A;
 	return A[A.size() - 1];
 }
 
@@ -67,7 +108,7 @@ double norm_v(vector<double> V) {
 	return ans;
 }
 
-vector<double>Zeyidey(vector<vector <double>> A, vector<double> B) {
+vector<double>Zeyidey(vector<vector<double>> A, vector<double> B) {
 	vector<double> x(B.size(), 0), x_prew(B.size(), -10000);
 	for (int i = 0; i < A.size(); i++) {
 		for (int j = 0; j < A[i].size(); j++) {
@@ -77,7 +118,7 @@ vector<double>Zeyidey(vector<vector <double>> A, vector<double> B) {
 		A[i][i] = 0;
 	}
 	
-	while (abs(norm_v(x) - norm_v(x_prew)) > 1e-3) {
+	while (abs(norm_v(x) - norm_v(x_prew)) > 1e-7) {
 		x_prew = x;
 		for (int i = 0; i < x.size(); i++) {
 			x[i] = 0;
@@ -88,42 +129,14 @@ vector<double>Zeyidey(vector<vector <double>> A, vector<double> B) {
 	}
 	return x;
 }
-vector<vector<double>> operator*(double x,vector<vector<double>>M) {
-	for (int i = 0; i < M.size(); i++) {
-		for (int j = 0; j < M[i].size(); j++) {
-			M[i][j] *= x;
-		}
-	}
-	return M;
-}
 
-vector<vector<double>> operator+(vector<vector<double>>A, vector<vector<double>>B) {
-	if (A.size() != B.size()) {
-		for (int i = 0; i < A.size(); i++) {
-			for (int j = 0; j < A[i].size(); j++) {
-				A[i][j] += B[i][j];
-			}
-		}
-		return A;
-	}
-	exit(0);
-}
-
-ostream& operator<< (ostream& out, vector<vector<double>>A) {
-	for (int i = 0; i < A.size(); i++) {
-		for (int j = 0; j < A[i].size(); j++) {
-			out <<setw(8)<< A[i][j]<<" ";
-		}
-		out << endl;
-	}
-	return out;
-}
 
 int main() {
 	vector<vector<double>>A = { {13., 1., 1.} 
 	                           ,{1., 15., 1.} 
 	                           ,{1., 1., 17.} };
 	vector<double>B = { 15., 17., 19. };
+	cout << "Start_pos:\n" << (A | B) << "\n";
 	vector<double>ans = Gauss(A, B);
 	cout << "Gauss:" << " ";
 	for (int i = 0; i < ans.size(); i++) {
@@ -145,7 +158,7 @@ int main() {
 			A[i][j] = (int(i <= j) - ( 2 * int(i < j))) + 11 * (1e-3) * ( 1 - (2 * int(i < j)));
 		}
 	}
-	cout << "\n" << A;
+	cout << "\nStart_pos:\n" << (A|B)<<"\n";
 	B[size - 1] = 1;
 	ans = Gauss(A, B);
 	cout << "Gauss:" << " ";
